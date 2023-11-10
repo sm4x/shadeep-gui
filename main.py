@@ -10,6 +10,7 @@ class Application(tk.Tk):                                       # Application is
     def __init__(self) -> None:                                 
         super().__init__()                                      # Application inherits from Tk
         self.title("SHAdeep")                                   # Application Title
+        self.geometry('1200x700')                               # root window size
         self.columnconfigure(0, weight=1)                       # configure root windo grid to
         self.rowconfigure(0, weight=1)                          # use whitespace when resizing
         self.interface()                                        # Create Interface as ttk object
@@ -19,7 +20,16 @@ class Application(tk.Tk):                                       # Application is
         mf.grid(column=0, 
                 row=0, 
                 sticky=(tk.N, tk.W, tk.E, tk.S))                # frame is sticky to the rootwindow edges
-        frame = ttk.Frame(mf, borderwidth=5, relief="ridge", width=200, height=100)
+        frame = ttk.Frame(mf,
+                          borderwidth=5,
+                          relief="ridge",
+                          width=200,
+                          height=100)
+        
+        
+        
+        
+        """ Boilerplate code from https://tkdocs.com/tutorial/grid.html  
         namelbl = ttk.Label(mf, text="Name")
         name = ttk.Entry(mf)
         onevar = tk.BooleanVar(value=True)
@@ -39,6 +49,7 @@ class Application(tk.Tk):                                       # Application is
         three.grid(column=2, row=3)
         ok.grid(column=3, row=3)
         cancel.grid(column=4, row=3)
+        """
         for i in (range(5)):
             mf.columnconfigure(i, weight=1)                       # use whitespace when resizing
             mf.rowconfigure(i, weight=1)
