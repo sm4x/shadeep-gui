@@ -17,7 +17,10 @@ class Application(tk.Tk):                                       # Application is
     #### Main Frame as TTK object##############################################################
         main_frame = ttk.Frame(self)
         tree_frame = ttk.Frame(main_frame, borderwidth=5, relief="ridge", width=200, height=100)
-        self.tree_view = ttk.Treeview(tree_frame)
+        self.tree_view = ttk.Treeview(tree_frame, selectmode='browse')
+        self.tree_view.heading('#0', text='Name')
+        self.tree_view.column('#0', stretch=True)
+        #self.tree_view.column('size', width=200)
         vsb = ttk.Scrollbar(tree_frame, orient="vertical", command=self.tree_view.yview)
         hsb = ttk.Scrollbar(tree_frame, orient="horizontal", command=self.tree_view.xview)
         self.tree_view.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
@@ -36,6 +39,10 @@ class Application(tk.Tk):                                       # Application is
         main_frame.rowconfigure(1, weight=1)
         tree_frame.columnconfigure(0, weight=1)
         tree_frame.rowconfigure(0, weight=1)
+    
+    
+    #### Generate Directory Tree###### ########################################################
+    
     
 ####################
 # Main Application #
