@@ -25,13 +25,32 @@ class Application(tk.Tk):                                       # Application is
     #### TreeView with frame #################################################################        
         tree_columns = ("1", "2", "3")
         tree_frame = ttk.Frame(mf,                              # Frame containing directory listing tree
-                               borderwidth=15,
-                               relief="ridge",)
+                               borderwidth=15,                  # DEBUG    
+                               relief="ridge")                  # DEBUG
                                #width=200,                      # DEBUG
                                #height=100)                     # DEBUG
-        tree_frame.grid(row=0, column=0, sticky=(tk.N, tk.W, tk.E, tk.S)) 
-        tree_view = ttk.Treeview(tree_frame, columns=tree_columns, show="headings")
-        tree_view.pack(fill='both', expand=True)                # Using simple packing for only widget in frame                
+        tree_frame.grid(row=0,                                  # Place Tree Frame TOP LEFT
+                        column=0, 
+                        sticky=(tk.N, tk.W, tk.E, tk.S))        # Sticky all
+        self.tree_view = ttk.Treeview(tree_frame, 
+                                      columns=tree_columns, 
+                                      show="headings")
+                                       
+        vsb = ttk.Scrollbar(tree_frame, orient="vertical", 
+                            command=self.tree_view.yview)
+        hsb = ttk.Scrollbar(tree_frame, orient="horizontal", 
+                            command=self.tree_view.xview)
+        self.tree_view.configure(yscrollcommand=vsb.set,
+                                 xscrollcommand=hsb.set)
+        vsb.pack(fill=tk.Y, side=tk.RIGHT)                      # Using simple packing only widgets in frame
+        hsb.pack(fill=tk.X, side=tk.BOTTOM)
+        self.tree_view.pack(side=tk.LEFT, 
+                            fill=tk.BOTH, 
+                            expand=1)                        
+        """
+        
+        
+        """
         
         """ Boilerplate code from https://tkdocs.com/tutorial/grid.html  
         namelbl = ttk.Label(mf, text="Name")
