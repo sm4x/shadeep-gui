@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import shadeep as sd
 import tkinter as tk
 import tkinter.ttk as ttk
@@ -11,10 +12,10 @@ class Application(tk.Tk):                                       # Application is
         self.title("SHAdeep")                                   # Application Title
         self.geometry('1200x700')                               # root window size
         self.interface()                                        # Create Interface as ttk object
-  
+        self.gen_tree()
       
     def interface(self):
-    #### Main Frame as TTK object##############################################################
+    #### Main Frame as TTK object#############################################################
         main_frame = ttk.Frame(self)
         tree_frame = ttk.Frame(main_frame, borderwidth=5, relief="ridge", width=200, height=100)
         self.tree_view = ttk.Treeview(tree_frame, selectmode='browse')
@@ -25,14 +26,14 @@ class Application(tk.Tk):                                       # Application is
         hsb = ttk.Scrollbar(tree_frame, orient="horizontal", command=self.tree_view.xview)
         self.tree_view.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
         
-    #### Place Widgets  ########################################################################
+    #### Place Widgets  ######################################################################
         main_frame.grid(column=0, row=0, sticky=(tk.N, tk.S, tk.E, tk.W))
         tree_frame.grid(column=0, row=0, columnspan=3, rowspan=2, sticky=(tk.N, tk.S, tk.E, tk.W))
         self.tree_view.grid(column=0, row=0, sticky=(tk.N, tk.S, tk.E, tk.W))
         vsb.grid(column=1, row=0, sticky=(tk.N, tk.S))
         hsb.grid(column=0, row=1, sticky=(tk.E, tk.W))
         
-    #### Configure for window resizing ########################################################
+    #### Configure for window resizing #######################################################
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
         main_frame.columnconfigure(0, weight=1)
@@ -41,8 +42,15 @@ class Application(tk.Tk):                                       # Application is
         tree_frame.rowconfigure(0, weight=1)
     
     
-    #### Generate Directory Tree###### ########################################################
-    
+    #### Generate Directory Tree #############################################################
+    def gen_tree(self, path=os.getcwd()):
+        path="/var"
+        directories =[os.path.relpath(x[0],os.path.dirname(path)) for x in os.walk(path)]
+        directories.sort()
+        for directory in directories:
+            parent = str(os.path.dirname(directory))
+            print(directory, ", ", parent)
+            self.tree_view.insert(parent, 'end', iid=str(directory), text=str(directory))
     
 ####################
 # Main Application #
