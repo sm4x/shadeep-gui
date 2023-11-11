@@ -20,12 +20,12 @@ class Application(tk.Tk):                                       # Application is
         tree_frame = ttk.Frame(main_frame, borderwidth=5, relief="ridge", width=200, height=100)
         self.tree_view = ttk.Treeview(tree_frame, selectmode='browse')
         self.tree_view.heading('#0', text='Name')
-        self.tree_view.column('#0', stretch=True)
+        self.tree_view.column('#0', stretch=False) # stretch needs to be "False" for hsb to work
         #self.tree_view.column('size', width=200)
         vsb = ttk.Scrollbar(tree_frame, orient="vertical", command=self.tree_view.yview)
         hsb = ttk.Scrollbar(tree_frame, orient="horizontal", command=self.tree_view.xview)
         self.tree_view.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
-        
+        self.tree_view.bind("<<TreeviewSelect>>", self.on_tree_select)
     #### Place Widgets  ######################################################################
         main_frame.grid(column=0, row=0, sticky=(tk.N, tk.S, tk.E, tk.W))
         tree_frame.grid(column=0, row=0, columnspan=3, rowspan=2, sticky=(tk.N, tk.S, tk.E, tk.W))
@@ -44,14 +44,20 @@ class Application(tk.Tk):                                       # Application is
     
     #### Generate Directory Tree #############################################################
     def gen_tree(self, path=os.getcwd()):
-        path="/var"
+        path="/usr"
         directories =[os.path.relpath(x[0],os.path.dirname(path)) for x in os.walk(path)]
         directories.sort()
         for directory in directories:
             parent = str(os.path.dirname(directory))
-            print(directory, ", ", parent)
+            #print(directory, ", ", parent)
             self.tree_view.insert(parent, 'end', iid=str(directory), text=str(directory))
-    
+            
+    def on_tree_select(self, event):
+        print("selected items:")
+        for item in self.tree_view.selection():
+            item_text = self.tree_view.item(item, "text")
+            print(item_text)
+    #### JOIN PATH with text
 ####################
 # Main Application #
 ####################
